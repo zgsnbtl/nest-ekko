@@ -8,7 +8,10 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 // 导入 @nestjs/config 提供的 ConfigService
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule, TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
+import { RolesModule } from './roles/roles.module';
+import { LogsModule } from './logs/logs.module';
 /**
  * 应用程序主模块
  * 集成所有模块、控制器和服务
@@ -32,6 +35,9 @@ import { TypeOrmModule, TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '
         logging: configService.get<boolean>('database.logging', false),
       }),
     }),
+    UserModule,
+    RolesModule,
+    LogsModule,
   ],
   // 注册控制器
   controllers: [AppController],

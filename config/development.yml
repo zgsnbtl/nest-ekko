@@ -11,6 +11,7 @@ database:
   password: '123456'
   database: nest_production
   logging: true
+  synchronize: true
 
 app:
   name: 'Nest Ekko (Development)'

@@ -16,5 +16,4 @@ export class TestController {
   throwNotFound() {
     throw new HttpException('资源不存在', HttpStatus.NOT_FOUND);
   }
-
 }

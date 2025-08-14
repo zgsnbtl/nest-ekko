@@ -9,10 +9,11 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { LogsEntity } from '../../../logs/entities/logs.entity/logs.entity';
 import { RoleEntity } from '../../../roles/entities/role.entity/role.entity';
-
+import { ProfileEntity } from '../profile.entity/profile.entity';
 /**
  * 用户实体类
  * 映射到数据库中的user表
@@ -30,7 +31,7 @@ export class UserEntity {
    * 用户名
    * 用户登录时使用的唯一标识符
    */
-  @Column()
+  @Column({ unique: true, length: 20, nullable: false })
   username: string;
 
   /**
@@ -65,4 +66,14 @@ export class UserEntity {
     inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
   })
   roles: RoleEntity[];
+
+  /**
+   * 用户个人信息
+   * 一对一关系，一个用户有一个个人信息
+   */
+  @OneToOne(() => ProfileEntity, (profile) => profile.user, {
+    cascade: true,
+    nullable: true,
+  })
+  profile: ProfileEntity;
 }

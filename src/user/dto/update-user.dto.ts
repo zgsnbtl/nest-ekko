@@ -1,9 +1,21 @@
-import { IsString, IsEmail, IsOptional, MinLength } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  IsEmail,
+  IsOptional,
+  MinLength,
+} from 'class-validator';
 
 /**
  * 更新用户数据传输对象
  */
 export class UpdateUserDto {
+  /**
+   * 用户ID
+   */
+  @IsNumber()
+  id: number;
+
   /**
    * 用户名
    * @example 'johndoe'

@@ -26,12 +26,14 @@ export class AppController {
    */
   @Get()
   getHello(): string {
-    const dbName = this.configService.get<string>('database.database');
-    const dbHost = this.configService.get<string>('database.host');
-    const appName = this.configService.get<string>('app.name');
+    const dbName = this.configService.get<string>('DB_NAME');
+    const dbHost = this.configService.get<string>('DB_HOST');
+    const appName = this.configService.get<string>('APP_NAME');
+    const dbPort = this.configService.get<number>('DB_PORT');
     console.log('当前应用名称：', appName);
     console.log('数据库名称：', dbName);
     console.log('数据库主机：', dbHost);
+    console.log('数据库端口：', dbPort);
     return this.appService.getHello();
   }
 }

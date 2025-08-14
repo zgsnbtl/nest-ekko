@@ -1,13 +1,24 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
 import * as crypto from 'crypto';
 // 全局声明crypto，使其在整个应用中可用
-(globalThis as any).crypto = crypto;
+// 添加类型安全的声明
+declare global {
+  interface Global {
+    crypto: typeof crypto;
+  }
+}
+
+(globalThis as unknown as Global).crypto = crypto;
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log', 'debug', 'verbose'],
+  });
 
   // 添加全局验证管道
   app.useGlobalPipes(
@@ -18,9 +29,15 @@ async function bootstrap() {
     }),
   );
 
+  // 注册全局异常过滤器（通过依赖注入）
+  app.useGlobalFilters(app.get(HttpExceptionFilter));
+
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('server.port', 3000);
+  const port = configService.get<number>('SERVER_PORT', 3000);
+  app.setGlobalPrefix('api');
+  // 确保导入 Logger 并指定类型
+  const logger = new Logger();
   await app.listen(port);
-  console.log(`Application running on port ${port}`);
+  logger.warn(`Application running on port============= ${port}`);
 }
 bootstrap();

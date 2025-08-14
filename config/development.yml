@@ -10,7 +10,7 @@ database:
   username: root
   password: '123456'
   database: nest_production
-  logging: true
+  logging: false
   synchronize: true
 
 app:
